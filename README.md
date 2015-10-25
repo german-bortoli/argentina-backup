@@ -1,3 +1,3 @@
 # argentina-backup
 
-Backup tool
+Copy env_default to .env, and then configure it

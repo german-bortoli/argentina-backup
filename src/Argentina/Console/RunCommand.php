@@ -26,7 +26,6 @@ class RunCommand extends \Symfony\Component\Console\Command\Command
     {
         $helper = $this->getHelper('process');
         $process = ProcessBuilder::create(['ls', '-a'])->getProcess();
-        //$process = new Process('ls -lsa');
 
 
         $helper->run($output, $process, 'The process failed :(', function ($type, $data) {

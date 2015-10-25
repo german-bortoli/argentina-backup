@@ -1,8 +1,21 @@
-MYSQL_HOST = "localhost"
-MYSQL_USER = "user"
-MYSQL_PASSWORD = "pass"
+# MySQL Dump binary, none will use mysqldump
+# MYSQLDUMP_BIN = /usr/bin/mysqldump
 
-MYSQL_DATABASES = "*"
+# MySQL Host
+MYSQL_HOST = localhost
 
+# MySQL User and Password
+MYSQL_USER = root
+MYSQL_PASSWORD = root
+
+# Databases to backup, "*" for all, or select using comma separated
+MYSQL_DATABASES = *
+
+# Keep maximum of X backups
 BACKUPS_TO_KEEP = 15
-BACKUP_DIRECTORY = "/var/tmp/backup"
+
+# Backup directory
+BACKUP_DIRECTORY = /var/tmp/backup
+
+# Whether or not to split up each database into its own file.
+FILE_PER_DATABASE = false
