@@ -12,6 +12,7 @@ It uses mysqldump command to do database backups
 ## Usage
 
 1) Copy env_default to .env, and then configure it
-2) Execute 
 
-   php run.php bk
+2) Run on your terminal 
+
+    php run.php bk
