@@ -8,7 +8,7 @@ MYSQL_HOST = localhost
 MYSQL_USER = root
 MYSQL_PASSWORD = root
 
-# Databases to backup, "*" for all, or select using comma separated
+# Databases to backup, "*" for all, or select multiples adding spaces, egg db1 db2
 MYSQL_DATABASES = *
 
 # Keep maximum of X backups
@@ -19,3 +19,6 @@ BACKUP_DIRECTORY = /var/tmp/backup
 
 # Whether or not to split up each database into its own file.
 FILE_PER_DATABASE = false
+
+# Compresss type, gzip for now
+COMPRESS_TYPE = gzip
