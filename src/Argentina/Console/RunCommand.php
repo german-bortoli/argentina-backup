@@ -2,6 +2,7 @@
 
 namespace Argentina\Console;
 
+use Argentina\Process\ClearProcess;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -36,14 +37,12 @@ class RunCommand extends \Symfony\Component\Console\Command\Command
         }
 
 
-        $helper->run($output, $process, 'The process failed :(', function ($type, $data) {
-            if (Process::ERR === $type) {
-                // ... do something with the stderr output
+        // Do the backup
+        $helper->run($output, $process, 'The process failed :(');
 
-            } else {
-                // ... do something with the stdout
-            }
-        });
+        // Clear old files
+        ClearProcess::run();
+
 
 
     }

@@ -33,7 +33,7 @@ class DumpProcess
             throw new ProcessException("Backup directory is wrong or does not exists.");
         }
 
-        $path = rtrim($path, '/');
+        $path = rtrim($path, DIRECTORY_SEPARATOR);
         $args = [];
 
         $file = $path.'/'.date('Y-m-d-His').'.sql';
