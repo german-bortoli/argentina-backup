@@ -8,6 +8,7 @@ For now is a mysqldump wrapper with backup rotator, it can store X quantity of b
  - File per database implementation.
  - Fix compression, for now only supports gzip.
  - Add unit testing.
+ - Add assets backup tool also.
  
  
 ## Usage
