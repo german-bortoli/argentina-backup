@@ -2,11 +2,12 @@
 
 IMPORTANT: In development stage.
 
-It uses mysqldump command to do database backups
+For now is a mysqldump wrapper with backup rotator, it can store X quantity of backups, the main idea is to refactor the code, add more cool features, like event oriented (to send notifications for example), add services (like cloud backuping), add multiple server supports, add multiple environment support, etc.
 
 ## TODO:
- - File per database implementation
- - Fix compression, for now only supports gzip
+ - File per database implementation.
+ - Fix compression, for now only supports gzip.
+ - Add unit testing.
  
  
 ## Usage
