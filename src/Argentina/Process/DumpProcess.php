@@ -44,7 +44,7 @@ class DumpProcess
         array_push($args, "-u{$user}");
 
         if ($pass) {
-            array_push($args, "-p{$pass}");
+            array_push($args, "-p'{$pass}'");
         }
 
         if ($databases == '*') {
