@@ -13,10 +13,20 @@ It aims to be a *PHP* alternative for *Holland Backup*
  - Add assets backup tool also.
  
  
+## Installation
+
+1) Clone this repository
+
+2) Copy env_default to .env, and then configure it
+
+3) Run composer install
+
 ## Usage
 
-1) Copy env_default to .env, and then configure it
-
-2) Run on your terminal 
+ Run on your terminal 
 
     php run.php bk
+
+
+You can also add it as a crontab entry.
+

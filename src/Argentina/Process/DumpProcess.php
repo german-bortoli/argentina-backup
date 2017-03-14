@@ -11,6 +11,7 @@ class DumpProcess
 
     public static function get(OutputInterface & $output)
     {
+
         $path = Env::get('BACKUP_DIRECTORY');
         $mysqldump = Env::get('MYSQLDUMP_BIN', '/usr/bin/mysqldump');
 
@@ -63,11 +64,13 @@ class DumpProcess
             array_push($args, " > {$file}");
         }
 
+        $extra_params = Env::get('MYSQLDUMP_EXTRA_PARAMS');
+
+        array_push($args, $extra_params);
 
         $output->writeln("<info>File created into {$file}</info>");
 
         // Launch process
         return new Process(implode(' ', $args));
-
     }
 }
