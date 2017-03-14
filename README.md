@@ -27,3 +27,6 @@ It aims to be a *PHP* alternative for *Holland Backup*
 
     php run.php bk
 
+
+You can also add it as a crontab entry.
+
