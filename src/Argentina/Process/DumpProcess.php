@@ -44,7 +44,7 @@ class DumpProcess
         array_push($args, "-u{$user}");
 
         if ($pass) {
-            array_push($args, "-p{$pass}");
+            array_push($args, "-p'{$pass}'");
         }
 
         if ($databases == '*') {
@@ -55,6 +55,10 @@ class DumpProcess
             $output->writeln("<info>Backup of databases {$databases}</info>");
         }
 
+        $extra_params = Env::get('MYSQLDUMP_EXTRA_PARAMS');
+
+        array_push($args, $extra_params);
+
 
         if ($compression) {
             $cformat = ($compression == 'gzip') ? 'gz' : $compression;
@@ -63,10 +67,6 @@ class DumpProcess
         } else {
             array_push($args, " > {$file}");
         }
-
-        $extra_params = Env::get('MYSQLDUMP_EXTRA_PARAMS');
-
-        array_push($args, $extra_params);
 
         $output->writeln("<info>File created into {$file}</info>");
 
