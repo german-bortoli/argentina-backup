@@ -23,5 +23,5 @@ FILE_PER_DATABASE = false
 # Compresss type, gzip for now
 COMPRESS_TYPE = gzip
 
-# Extra mysqldump parameters. For example: --opt --skip-tz-utc
+# Extra mysqldump parameters. For example: "--opt --skip-tz-utc"
 MYSQLDUMP_EXTRA_PARAMS = 
