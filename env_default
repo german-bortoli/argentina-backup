@@ -8,9 +8,6 @@ MYSQL_HOST = localhost
 MYSQL_USER = root
 MYSQL_PASSWORD = root
 
-# Databases to backup, "*" for all, or select multiples adding spaces, egg db1 db2
-MYSQL_DATABASES = *
-
 # Keep maximum of X backups
 BACKUPS_TO_KEEP = 15
 
@@ -24,4 +21,4 @@ FILE_PER_DATABASE = false
 COMPRESS_TYPE = gzip
 
 # Extra mysqldump parameters. For example: "--opt --skip-tz-utc"
-MYSQLDUMP_EXTRA_PARAMS = 
+MYSQLDUMP_EXTRA_PARAMS =
