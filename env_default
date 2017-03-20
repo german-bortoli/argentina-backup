@@ -14,9 +14,6 @@ BACKUPS_TO_KEEP = 15
 # Backup directory
 BACKUP_DIRECTORY = /var/tmp/backup
 
-# Whether or not to split up each database into its own file.
-FILE_PER_DATABASE = false
-
 # Compresss type, gzip for now
 COMPRESS_TYPE = gzip
 
