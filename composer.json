@@ -16,7 +16,9 @@
     "symfony/console": "~2.3",
     "symfony/process": "~2.3",
     "psr/log": "~1.0",
-    "vlucas/phpdotenv": "~2.0"
+    "vlucas/phpdotenv": "~2.0",
+    "illuminate/database": "^5.4",
+    "illuminate/events": "^5.4"
   },
   "bin": [
     "argentina.sh"

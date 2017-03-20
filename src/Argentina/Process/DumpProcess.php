@@ -5,72 +5,80 @@ namespace Argentina\Process;
 use Argentina\Helper\Env;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 class DumpProcess
 {
 
+
     public static function get(OutputInterface & $output)
     {
-
-        $path = Env::get('BACKUP_DIRECTORY');
+        $backupPath = Env::get('BACKUP_DIRECTORY');
         $mysqldump = Env::get('MYSQLDUMP_BIN', '/usr/bin/mysqldump');
 
         $user = Env::get('MYSQL_USER');
         $pass = Env::get('MYSQL_PASSWORD');
         $host = Env::get('MYSQL_HOST', 'localhost');
-        $compression = Env::get('COMPRESS_TYPE', false);
-
-        $databases = Env::get('MYSQL_DATABASES', '*');
 
         if (!$user) {
             throw new ProcessException("MySQL user should be configured");
         }
-
-        if (!$path) {
+        if (!$backupPath) {
             throw new ProcessException("Backup directory should be configured");
         }
-
-        if (!is_dir($path)) {
+        if (!is_dir($backupPath)) {
             throw new ProcessException("Backup directory is wrong or does not exists.");
         }
 
-        $path = rtrim($path, DIRECTORY_SEPARATOR);
-        $args = [];
-
-        $file = $path.'/'.date('Y-m-d-His').'.sql';
-
-        array_push($args, $mysqldump);
-        array_push($args, "-h{$host}");
-        array_push($args, "-u{$user}");
-
-        if ($pass) {
-            array_push($args, "-p'{$pass}'");
-        }
-
-        if ($databases == '*') {
-            array_push($args, '--all-databases');
-            $output->writeln('<info>Backup of all databases</info>');
-        } else {
-            array_push($args, "--databases {$databases}");
-            $output->writeln("<info>Backup of databases {$databases}</info>");
-        }
+        $backupPath = rtrim($backupPath, DIRECTORY_SEPARATOR);
 
         $extra_params = Env::get('MYSQLDUMP_EXTRA_PARAMS');
 
-        array_push($args, $extra_params);
+        $tmpPath = $backupPath . '/.tmp/';
+
+        //Remove temporary
+        $output->writeln("<comment>Clearing tmp</comment>");
+        $command = new Process("rm -rf {$tmpPath}");
+        $command->run();
+
+        //Create temporal directory
+        $command = new Process("mkdir -p {$tmpPath}");
+        $command->run();
 
 
-        if ($compression) {
-            $cformat = ($compression == 'gzip') ? 'gz' : $compression;
-            $output->writeln("<info>Using compression {$cformat}</info>");
-            array_push($args, "| {$compression} > {$file}.{$cformat}");
-        } else {
-            array_push($args, " > {$file}");
+        $databases = Capsule::select(Capsule::raw('show databases'));
+
+        foreach ($databases as $database) {
+
+            if (!isset($database->Database)) {
+                continue;
+            }
+
+            $databaseName = $database->Database;
+
+            $output->writeln("<info>*** Working on: {$databaseName} </info>");
+
+            $backupCommand = "{$mysqldump} -h{$host} -u{$user} -p'{$pass}' {$extra_params} {$databaseName} | gzip > {$tmpPath}{$databaseName}.sql.gz";
+            $output->writeln("<comment>{$backupCommand} </comment>");
+
+
+            $command = new Process("{$backupCommand}");
+            $command->run();
+
         }
 
-        $output->writeln("<info>File created into {$file}</info>");
+        $file = $backupPath . '/' . date('Y-m-d-His') . '.tar.gz';
 
-        // Launch process
-        return new Process(implode(' ', $args));
+        $output->writeln("<comment>Compressing files...</comment>");
+        $command = new Process("tar -zcvf {$file} -C {$tmpPath} .");
+        $command->run();
+
+        if ($command->isSuccessful()) {
+            $output->writeln("<info>Finished successfully... Backup file {$file}</info>");
+        }
+
+        //Clearing tmp
+        $command = new Process("rm -rf {$tmpPath}");
+        $command->run();
     }
 }
