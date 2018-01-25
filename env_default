@@ -24,4 +24,13 @@ FILE_PER_DATABASE = false
 COMPRESS_TYPE = gzip
 
 # Extra mysqldump parameters. For example: "--opt --skip-tz-utc"
-MYSQLDUMP_EXTRA_PARAMS = 
+MYSQLDUMP_EXTRA_PARAMS =
+
+# CLOUD BACKUP, local and s3
+BACKUP_STORAGE=local
+
+# AMAZON CONFIGURATIONS
+#AWS_KEY="simple-key"
+#AWS_SECRET="mysecret-key"
+#AWS_REGION="some-aws-region"
+#AWS_BUCKET="your-awesome-bucket-name"
