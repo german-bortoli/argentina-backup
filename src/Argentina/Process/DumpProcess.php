@@ -95,7 +95,7 @@ class DumpProcess
         $fromPath = "tmp://{$filename}";
         $toPath = "{$storage}://{$filename}";
 
-        $output->writeln("<info>🇦🇷  Uploading your awesome backup. 🇦🇷</info>");
+        $output->writeln("<info>🇦🇷  Saving your awesome backup. 🇦🇷</info>");
         $moved = $manager->copy($fromPath, $toPath);
 
         if ($moved) {
