@@ -51,6 +51,13 @@ class Env
 
     public static function getTmpDirectory()
     {
+
+        $tmp_dir = self::get('TMP_DIR', false);
+
+        if ($tmp_dir) {
+            return $tmp_dir;
+        }
+
         return ini_get('upload_tmp_dir') ? ini_get('upload_tmp_dir') : sys_get_temp_dir();
 
     }

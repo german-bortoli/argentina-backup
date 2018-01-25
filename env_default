@@ -23,6 +23,8 @@ COMPRESS_TYPE = gzip
 # Extra mysqldump parameters. For example: "--opt --skip-tz-utc"
 MYSQLDUMP_EXTRA_PARAMS =
 
+TMP_DIR='/home/ubuntu/tmp-backup'
+
 # BACKUP STORAGE, local and s3
 BACKUP_STORAGE=local
 
