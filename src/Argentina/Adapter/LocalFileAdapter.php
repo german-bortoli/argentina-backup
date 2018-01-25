@@ -16,13 +16,15 @@ class LocalFileAdapter
 
     public function __construct()
     {
-        $path = Env::get('BACKUP_DIRECTORY');
+        $tmpDir = rtrim(Env::getTmpDirectory(), DIRECTORY_SEPARATOR);
+
+        $path = Env::get('BACKUP_DIRECTORY', $tmpDir);
         $path = rtrim($path, DIRECTORY_SEPARATOR);
 
         $localAdapter = new Local($path);
 
         $this->adapter = new \League\Flysystem\Filesystem($localAdapter);
-        $this->tmpAdapter = new \League\Flysystem\Filesystem(new Local(sys_get_temp_dir()));
+        $this->tmpAdapter = new \League\Flysystem\Filesystem(new Local($tmpDir));
 
     }
 

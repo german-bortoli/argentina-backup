@@ -14,9 +14,6 @@ MYSQL_DATABASES = *
 # Keep maximum of X backups
 BACKUPS_TO_KEEP = 15
 
-# Backup directory
-BACKUP_DIRECTORY = /var/tmp/backup
-
 # Whether or not to split up each database into its own file.
 FILE_PER_DATABASE = false
 
@@ -26,8 +23,11 @@ COMPRESS_TYPE = gzip
 # Extra mysqldump parameters. For example: "--opt --skip-tz-utc"
 MYSQLDUMP_EXTRA_PARAMS =
 
-# CLOUD BACKUP, local and s3
+# BACKUP STORAGE, local and s3
 BACKUP_STORAGE=local
+
+# Backup directory, if local storage is setted up on Backup Storage
+BACKUP_DIRECTORY = /var/tmp/backup
 
 # AMAZON CONFIGURATIONS
 #AWS_KEY="simple-key"

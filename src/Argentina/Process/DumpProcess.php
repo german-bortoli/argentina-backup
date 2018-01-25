@@ -12,8 +12,6 @@ class DumpProcess
 
     public static function get(OutputInterface & $output)
     {
-
-        $path = Env::get('BACKUP_DIRECTORY');
         $mysqldump = Env::get('MYSQLDUMP_BIN', '/usr/bin/mysqldump');
 
         $user = Env::get('MYSQL_USER');
@@ -27,22 +25,12 @@ class DumpProcess
             throw new ProcessException("MySQL user should be configured");
         }
 
-        if (!$path) {
-            throw new ProcessException("Backup directory should be configured");
-        }
-
-        if (!is_dir($path)) {
-            throw new ProcessException("Backup directory is wrong or does not exists.");
-        }
-
-        $path = rtrim($path, DIRECTORY_SEPARATOR);
         $args = [];
 
         $filename = date('Y-m-d-His') . '.sql';
-        $file = $path . DIRECTORY_SEPARATOR . $filename;
 
-        $tmpFile = sys_get_temp_dir().DIRECTORY_SEPARATOR.$filename;
-
+        $tmpDirectory = rtrim(Env::getTmpDirectory(), DIRECTORY_SEPARATOR);
+        $tmpFile = $tmpDirectory . DIRECTORY_SEPARATOR . $filename;
 
         array_push($args, $mysqldump);
         array_push($args, "-h{$host}");
@@ -73,33 +61,42 @@ class DumpProcess
             array_push($args, " > {$tmpFile}");
         }
 
-        $output->writeln("<info>Starting the backup process...</info>");
+        $output->writeln("<info>Starting the backup process, tmp file: {$tmpFile}</info>");
 
         // Launch process
         $process = new Process(implode(' ', $args));
         $process->run();
 
         if ($process->isSuccessful()) {
-            $output->writeln("<info>Successfully created the backup into: {$file}</info>");
-            self::uploadBackup($output, $file, $filename);
+            self::uploadBackup($output, $filename);
+
         } else {
-            $output->writeln("<error>Oh no, some error happened deleting {$file}</error>");
+            $output->writeln("<error>Oh no, some error happened deleting {$tmpFile}</error>");
             // Remove file
-            $process = new Process("rm {$file}");
         }
+
+        $process = new Process("rm {$tmpFile}");
 
         return $process;
     }
 
-    public static function uploadBackup(OutputInterface & $output, $file, $filename)
+    public
+    static function uploadBackup(OutputInterface & $output, $filename)
     {
         $storage = Env::get('BACKUP_STORAGE', 'local');
 
         $mountManager = new MountManagerFactory();
         $manager = $mountManager->getManager();
 
+        $fromPath = "tmp://{$filename}";
+        $toPath = "{$storage}://{$filename}";
+
         $output->writeln("<info>🇦🇷  Uploading your awesome backup. 🇦🇷</info>");
-        $manager->move("tmp://{$filename}", "{$storage}://{$filename}");
+        $moved = $manager->copy($fromPath, $toPath);
+
+        if ($moved) {
+            $output->writeln("<info>Successfully created the backup into {$toPath}.</info>");
+        }
 
     }
 }
