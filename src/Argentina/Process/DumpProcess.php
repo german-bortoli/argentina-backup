@@ -71,13 +71,14 @@ class DumpProcess
 
         if ($process->isSuccessful()) {
             self::uploadBackup($output, $tmpFile);
-
         } else {
-            $output->writeln("<error>Oh no, some error happened deleting {$tmpFile}</error>");
-            // Remove file
+            $output->writeln("<error>Oh no, some error happened 🤬 </error>");
         }
 
-        $process = new Process("rm {$tmpFile}");
+        $output->writeln("<error>😱  Deleting file {$tmpFile} 😱 </error>");
+
+        $rmProcess = new Process("rm {$tmpFile}");
+        $rmProcess->run();
 
         return $process;
     }
