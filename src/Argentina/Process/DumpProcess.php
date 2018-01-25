@@ -28,9 +28,12 @@ class DumpProcess
         $args = [];
 
         $filename = date('Y-m-d-His') . '.sql';
+        $cformat = ($compression == 'gzip') ? 'gz' : $compression;
 
         $tmpDirectory = rtrim(Env::getTmpDirectory(), DIRECTORY_SEPARATOR);
         $tmpFile = $tmpDirectory . DIRECTORY_SEPARATOR . $filename;
+
+        $tmpFile = ($compression) ? $tmpFile . '.' . $cformat : $tmpFile;
 
         array_push($args, $mysqldump);
         array_push($args, "-h{$host}");
@@ -54,9 +57,8 @@ class DumpProcess
 
 
         if ($compression) {
-            $cformat = ($compression == 'gzip') ? 'gz' : $compression;
             $output->writeln("<info>Using compression {$cformat}</info>");
-            array_push($args, "| {$compression} > {$tmpFile}.{$cformat}");
+            array_push($args, "| {$compression} > {$tmpFile}");
         } else {
             array_push($args, " > {$tmpFile}");
         }
@@ -68,7 +70,7 @@ class DumpProcess
         $process->run();
 
         if ($process->isSuccessful()) {
-            self::uploadBackup($output, $filename);
+            self::uploadBackup($output, $tmpFile);
 
         } else {
             $output->writeln("<error>Oh no, some error happened deleting {$tmpFile}</error>");
@@ -80,9 +82,10 @@ class DumpProcess
         return $process;
     }
 
-    public
-    static function uploadBackup(OutputInterface & $output, $filename)
+    public static function uploadBackup(OutputInterface & $output, $file)
     {
+        $filename = pathinfo($file, PATHINFO_BASENAME);
+
         $storage = Env::get('BACKUP_STORAGE', 'local');
 
         $mountManager = new MountManagerFactory();
