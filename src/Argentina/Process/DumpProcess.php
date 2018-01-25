@@ -2,6 +2,7 @@
 
 namespace Argentina\Process;
 
+use Argentina\Factory\MountManagerFactory;
 use Argentina\Helper\Env;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
@@ -37,7 +38,11 @@ class DumpProcess
         $path = rtrim($path, DIRECTORY_SEPARATOR);
         $args = [];
 
-        $file = $path.'/'.date('Y-m-d-His').'.sql';
+        $filename = date('Y-m-d-His') . '.sql';
+        $file = $path . DIRECTORY_SEPARATOR . $filename;
+
+        $tmpFile = sys_get_temp_dir().DIRECTORY_SEPARATOR.$filename;
+
 
         array_push($args, $mysqldump);
         array_push($args, "-h{$host}");
@@ -63,14 +68,38 @@ class DumpProcess
         if ($compression) {
             $cformat = ($compression == 'gzip') ? 'gz' : $compression;
             $output->writeln("<info>Using compression {$cformat}</info>");
-            array_push($args, "| {$compression} > {$file}.{$cformat}");
+            array_push($args, "| {$compression} > {$tmpFile}.{$cformat}");
         } else {
-            array_push($args, " > {$file}");
+            array_push($args, " > {$tmpFile}");
         }
 
-        $output->writeln("<info>File created into {$file}</info>");
+        $output->writeln("<info>Starting the backup process...</info>");
 
         // Launch process
-        return new Process(implode(' ', $args));
+        $process = new Process(implode(' ', $args));
+        $process->run();
+
+        if ($process->isSuccessful()) {
+            $output->writeln("<info>Successfully created the backup into: {$file}</info>");
+            self::uploadBackup($output, $file, $filename);
+        } else {
+            $output->writeln("<error>Oh no, some error happened deleting {$file}</error>");
+            // Remove file
+            $process = new Process("rm {$file}");
+        }
+
+        return $process;
+    }
+
+    public static function uploadBackup(OutputInterface & $output, $file, $filename)
+    {
+        $storage = Env::get('BACKUP_STORAGE', 'local');
+
+        $mountManager = new MountManagerFactory();
+        $manager = $mountManager->getManager();
+
+        $output->writeln("<info>🇦🇷  Uploading your awesome backup. 🇦🇷</info>");
+        $manager->move("tmp://{$filename}", "{$storage}://{$filename}");
+
     }
 }
