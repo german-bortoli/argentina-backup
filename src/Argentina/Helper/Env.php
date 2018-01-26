@@ -2,6 +2,7 @@
 /**
  * Helper class to access to env variables
  */
+
 namespace Argentina\Helper;
 
 
@@ -51,7 +52,6 @@ class Env
 
     public static function getTmpDirectory()
     {
-
         $tmp_dir = self::get('TMP_DIR', false);
 
         if ($tmp_dir) {
@@ -59,7 +59,23 @@ class Env
         }
 
         return ini_get('upload_tmp_dir') ? ini_get('upload_tmp_dir') : sys_get_temp_dir();
+    }
 
+    public static function getStorages()
+    {
+        $storages = Env::get('BACKUP_STORAGE', 'local');
+
+        $storages = explode(',', $storages);
+
+        if (is_string($storages)) {
+            $storages = [$storages];
+        }
+
+        $storages = array_map(function($item) {
+            return trim($item);
+        }, $storages);
+
+        return $storages;
     }
 
 }

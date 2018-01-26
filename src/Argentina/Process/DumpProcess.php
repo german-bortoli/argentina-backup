@@ -87,21 +87,22 @@ class DumpProcess
     {
         $filename = pathinfo($file, PATHINFO_BASENAME);
 
-        $storage = Env::get('BACKUP_STORAGE', 'local');
+        $aStores = Env::getStorages();
         $filePrefix = Env::get('FILENAME_PREFIX', '');
 
         $mountManager = new MountManagerFactory();
         $manager = $mountManager->getManager();
 
         $fromPath = "tmp://{$filename}";
-        $toPath = "{$storage}://{$filePrefix}{$filename}";
 
-        $output->writeln("<info>🇦🇷  Saving your awesome backup. 🇦🇷</info>");
-        $moved = $manager->copy($fromPath, $toPath);
+        foreach($aStores as $storage) {
 
-        if ($moved) {
-            $output->writeln("<info>Successfully created the backup into {$toPath}.</info>");
+            $toPath = "{$storage}://{$filePrefix}{$filename}";
+            $output->writeln("<info>🇦🇷  Saving your awesome backup into {$storage}. 🇦🇷</info>");
+            $moved = $manager->copy($fromPath, $toPath);
+            if ($moved) {
+                $output->writeln("<info>Successfully created the backup into {$toPath}.</info>");
+            }
         }
-
     }
 }

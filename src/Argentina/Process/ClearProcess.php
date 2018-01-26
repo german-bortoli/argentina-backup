@@ -13,7 +13,15 @@ class ClearProcess
 {
     public static function run()
     {
-        $storage = Env::get('BACKUP_STORAGE', 'local');
+        $aStores = Env::getStorages();
+
+        foreach($aStores as $storage) {
+            self::clearFrom($storage);
+        }
+    }
+
+    public static function clearFrom($storage)
+    {
 
         $mountManager = new MountManagerFactory();
         $manager = $mountManager->getManager();

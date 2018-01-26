@@ -29,7 +29,7 @@ MYSQLDUMP_EXTRA_PARAMS =
 # PREFIX OF DB BACKUP
 FILENAME_PREFIX="argBk-"
 
-# BACKUP STORAGE, local, s3 and gdrive
+# BACKUP STORAGE, local, s3 and gdrive, comma sepparated values for multiple destination
 BACKUP_STORAGE=local
 
 # Backup directory, if local storage is setted up on Backup Storage

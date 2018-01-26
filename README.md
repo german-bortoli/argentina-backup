@@ -15,6 +15,14 @@ Create mysql backups and store it into your local server, google drive and s3.
 2) Copy env_default to .env, and then configure it.
 3) Run composer install.
 
+## Env variables tips:
+
+- You can have multiple destinations if you separe by comma the values, for example
+```$xslt
+BACKUP_STORAGE=local,gdrive
+```
+
+
 ## Usage
 
  Run on your terminal 
