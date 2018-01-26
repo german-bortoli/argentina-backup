@@ -2,6 +2,7 @@
 
 namespace Argentina\Factory;
 
+use Argentina\Adapter\GoogleDriveAdapter;
 use Argentina\Adapter\LocalFileAdapter;
 use Argentina\Adapter\S3FileAdapter;
 
@@ -13,13 +14,13 @@ class MountManagerFactory
     {
         $s3Adapter = new S3FileAdapter();
         $localAdapter = new LocalFileAdapter();
-
+        $gDriveAdapter = new GoogleDriveAdapter();
         // Add them in the constructor
         $this->manager = new \League\Flysystem\MountManager([
-//            'ftp' => $ftp,
-            's3' => $s3Adapter->getAdapter(),
-            'local' => $localAdapter->getAdapter(),
             'tmp' => $localAdapter->getTempAdapter(),
+            'local' => $localAdapter->getAdapter(),
+            's3' => $s3Adapter->getAdapter(),
+            'gdrive' => $gDriveAdapter->getAdapter(),
         ]);
     }
 

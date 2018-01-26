@@ -88,12 +88,13 @@ class DumpProcess
         $filename = pathinfo($file, PATHINFO_BASENAME);
 
         $storage = Env::get('BACKUP_STORAGE', 'local');
+        $filePrefix = Env::get('FILENAME_PREFIX', '');
 
         $mountManager = new MountManagerFactory();
         $manager = $mountManager->getManager();
 
         $fromPath = "tmp://{$filename}";
-        $toPath = "{$storage}://{$filename}";
+        $toPath = "{$storage}://{$filePrefix}{$filename}";
 
         $output->writeln("<info>🇦🇷  Saving your awesome backup. 🇦🇷</info>");
         $moved = $manager->copy($fromPath, $toPath);

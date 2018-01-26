@@ -1,22 +1,19 @@
 # argentina-backup
 
-Create mysql backups and store it anywhere
+Create mysql backups and store it into your local server, google drive and s3.
 
 ## TODO:
  - File per database implementation.
  - Fix compression, for now only supports gzip.
  - Add unit testing.
  - Add assets backup tool also.
- - Add google drive file adapter.
  
  
 ## Installation
 
-1) Clone this repository
-
-2) Copy env_default to .env, and then configure it
-
-3) Run composer install
+1) Clone this repository.
+2) Copy env_default to .env, and then configure it.
+3) Run composer install.
 
 ## Usage
 
@@ -26,7 +23,8 @@ Create mysql backups and store it anywhere
     
 ## Upload to S3
 
- - First configure your env variables and you are ready to go.
+ - Get amazon s3 access keys (iam-roles).
+ - Configure your env variables and you are ready to go.
  
  ```$xslt
 BACKUP_STORAGE: s3     
@@ -36,6 +34,19 @@ AWS_REGION="some-aws-region"
 AWS_BUCKET="your-awesome-bucket-name"
 ```
  
+## Upload to Google Drive
+
+
+- Get google drive keys, you can follow this guide: https://gist.github.com/ivanvermeyen/cc7c59c185daad9d4e7cb8c661d7b89b
+- Configure your env variables and you are ready to go.
+
+```$xslt
+GOOGLE_CLIENT_ID="sample-google-client-id"
+GOOGLE_SECRET_KEY="sample-google-secret-key"
+GOOGLE_REFRESH_TOKEN="sample-google-refresh-token"
+# OPTIONAL FOLDER ID
+GOOGLE_FOLDER_ID="sample-google-folder-id"
+```
  
 ## Crontab
 

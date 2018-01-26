@@ -23,16 +23,26 @@ COMPRESS_TYPE = gzip
 # Extra mysqldump parameters. For example: "--opt --skip-tz-utc"
 MYSQLDUMP_EXTRA_PARAMS =
 
-TMP_DIR='/home/ubuntu/tmp-backup'
+# TMP DIRECTORY TO STORE YOUR BACKUP, PHP MUST HAVE ACCESS TO IT
+#TMP_DIR='/home/ubuntu/tmp-backup'
 
-# BACKUP STORAGE, local and s3
+# PREFIX OF DB BACKUP
+FILENAME_PREFIX="argBk-"
+
+# BACKUP STORAGE, local, s3 and gdrive
 BACKUP_STORAGE=local
 
 # Backup directory, if local storage is setted up on Backup Storage
-BACKUP_DIRECTORY = /var/tmp/backup
+#BACKUP_DIRECTORY = /var/tmp/backup
 
-# AMAZON CONFIGURATIONS
+# AWS S3 STORAGE
 #AWS_KEY="simple-key"
 #AWS_SECRET="mysecret-key"
 #AWS_REGION="some-aws-region"
 #AWS_BUCKET="your-awesome-bucket-name"
+
+# GOOGLE DRIVE STORAGE (howto get keys: https://gist.github.com/ivanvermeyen/cc7c59c185daad9d4e7cb8c661d7b89b)
+GOOGLE_CLIENT_ID="sample-google-client-id"
+GOOGLE_SECRET_KEY="sample-google-secret-key"
+GOOGLE_REFRESH_TOKEN="sample-google-refresh-token"
+GOOGLE_FOLDER_ID="sample-google-folder-id"

@@ -27,7 +27,6 @@ class RunCommand extends \Symfony\Component\Console\Command\Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $helper = $this->getHelper('process');
 
         try {

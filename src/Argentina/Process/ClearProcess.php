@@ -25,6 +25,7 @@ class ClearProcess
         });
 
         $to_keep = Env::get('BACKUPS_TO_KEEP', false);
+        $filePrefix = Env::get('FILENAME_PREFIX', false);
 
         if ($to_keep == false) {
             return true;
@@ -34,8 +35,27 @@ class ClearProcess
         $deleted = [];
         $count_files = 0;
 
+        $fClearPrefix = function ($node) use ($filePrefix) {
+
+            if (!$filePrefix) {
+                return null;
+            }
+
+            if (strpos($node['filename'], $filePrefix) === 0) {
+                return true;
+            }
+
+            return false;
+        };
+
         foreach ($files as $node) {
             if ($node['type'] !== 'file') {
+                continue;
+            }
+
+            $hasPrefix = $fClearPrefix($node);
+
+            if ($hasPrefix === false) {
                 continue;
             }
 

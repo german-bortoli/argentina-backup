@@ -18,7 +18,8 @@
     "psr/log": "~1.0",
     "vlucas/phpdotenv": "~2.0",
     "league/flysystem": "^1.0",
-    "league/flysystem-aws-s3-v3": "^1.0"
+    "league/flysystem-aws-s3-v3": "^1.0",
+    "nao-pon/flysystem-google-drive": "~1.1"
   },
   "bin": [
     "argentina.sh"
