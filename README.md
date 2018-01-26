@@ -1,6 +1,8 @@
 # argentina-backup
 
-Create mysql backups and store it into your local server, google drive and s3.
+- Create mysql backups and store it into your local server, google drive or/and s3.
+- Backup rotator, keep X quantity of backups and delete old ones.
+- Prefixed backup names, give a prefix name to your backup, for example, **project**-XXXX-XX-XX-XX-XXXXXX.sql
 
 ## TODO:
  - File per database implementation.
